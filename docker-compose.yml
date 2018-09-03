@@ -1,0 +1,13 @@
+version: "3"
+services:
+  influxdb:
+    image: "influxdb:latest"
+    ports:
+      - 8086:8086
+    environment:
+      - INFLUXDB_ADMIN_USER=admin
+      - INFLUXDB_ADMIN_PASSWORD=admin
+  garie-lighthouse:
+    image: "garie-lighthouse:latest"
+    ports:
+      - 3000:3000

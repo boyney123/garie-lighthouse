@@ -1,0 +1,8 @@
+{
+	"cron": "00 00 */6 * * *",
+	"urls": [
+		{
+			"url": "https://www.example.com"
+		}
+	]
+}
