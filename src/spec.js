@@ -70,7 +70,7 @@ describe('main', () => {
 
     });
 
-    it.only('create a lighthouse report when report is enabled', async (done) => {
+    it('create a lighthouse report when report is enabled', async (done) => {
 
         await main();
 

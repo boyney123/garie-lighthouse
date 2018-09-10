@@ -74,8 +74,8 @@ module.exports = {
 			const report = await createReport(data);
 			return report;
 		} catch (err) {
-			console.log(err)
 			logger.error(`Failed to generate report`);
+			return Promise.reject('Failed to generate report');
 		}
 	}
 }

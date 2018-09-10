@@ -2,11 +2,11 @@ const { saveData, init } = require('./index');
 const influx = require('./influx');
 
 jest.mock('./influx', () => {
-	return {
+    return {
         getDatabaseNames: jest.fn(),
         createDatabase: jest.fn(),
         writePoints: jest.fn()
-	}
+    }
 });
 
 
@@ -17,7 +17,7 @@ describe('influxdb', () => {
         influx.getDatabaseNames.mockClear();
         influx.createDatabase.mockClear();
         influx.writePoints.mockClear();
-        
+
     });
 
     describe('init', () => {
@@ -39,14 +39,22 @@ describe('influxdb', () => {
             await init();
 
             expect(influx.createDatabase).not.toHaveBeenCalled();
-            
+
+        });
+
+        it('rejects when failing to get database names from influx', async () => {
+
+            influx.getDatabaseNames.mockRejectedValue();
+
+            return expect(init()).rejects.toMatch('Failed to initialise influx');
+
         });
 
     });
 
-	describe('saveData', () => {
+    describe('saveData', () => {
 
-		it('writes influxdb points into the database for each property on a given object if it has values', async () => {
+        it('writes influxdb points into the database for each property on a given object if it has values', async () => {
 
             const result = await saveData('https://www.test.com', { firstname: 'bob', lastname: 'bob' });
 
@@ -73,7 +81,7 @@ describe('influxdb', () => {
 
 
         });
-        
+
         it('does not write influxdb points into the database for any property that does not have a value', async () => {
 
             await saveData('https://www.test.com', { firstname: 'bob', lastname: undefined });
@@ -92,6 +100,6 @@ describe('influxdb', () => {
 
         });
 
-	});
+    });
 
 });

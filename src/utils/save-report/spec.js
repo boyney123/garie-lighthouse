@@ -37,13 +37,13 @@ describe('save-report', () => {
 
     });
 
-    it.only('throws an error if generating the lighthouse report fails', async () => {
+    it('throws an error if generating the lighthouse report fails', async () => {
 
         const today = new Date();
 
         generateReport.mockRejectedValue();
 
-        await expect(saveReport('https://www.save-report-test.co.uk', mockData.lhr)).rejects.toMatch('Failed to generate report');
+        return await expect(saveReport('https://www.save-report-test.co.uk', mockData.lhr)).rejects.toMatch('Failed to generate report');
 
     });
 

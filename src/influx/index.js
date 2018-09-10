@@ -5,7 +5,7 @@ const logger = require('../utils/logger');
  * Bootstrap the database
  */
 const init = async () => {
-	try{
+	try {
 		const names = await influx.getDatabaseNames();
 		if (names.indexOf('lighthouse') === -1) {
 			logger.info('Database Check', 'lighthouse database does not exist. Creating one');
@@ -13,10 +13,10 @@ const init = async () => {
 		}
 		logger.info('Database Check', 'lighthouse database already exists.');
 		return Promise.resolve();
-	} catch(err){
-		console.log(err);
+	} catch (err) {
+		return Promise.reject('Failed to initialise influx')
 	}
-	
+
 };
 
 /**

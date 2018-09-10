@@ -1,5 +1,5 @@
-const { getData } = require('./index');
-const { launchChromeAndRunLighthouse } = require.requireMock('./utils');
+const { getData, generateReport } = require('./index');
+const { launchChromeAndRunLighthouse, createReport } = require.requireMock('./utils');
 const logger = require('../utils/logger');
 const mockData = require('../../test/mock-data/lighthouse-test-data.json');
 
@@ -7,7 +7,8 @@ const URL = 'https://www.test.com';
 
 jest.mock('./utils', () => {
 	return {
-		launchChromeAndRunLighthouse: jest.fn()
+		launchChromeAndRunLighthouse: jest.fn(),
+		createReport: jest.fn()
 	}
 });
 
@@ -21,6 +22,7 @@ describe('reporter', () => {
 
 	beforeEach(() => {
 		launchChromeAndRunLighthouse.mockClear();
+		createReport.mockClear();
 	});
 
 
@@ -80,4 +82,22 @@ describe('reporter', () => {
 
 	});
 
+	describe('generateReport', () => {
+
+		it('rejects when failing to create a light house report', async () => {
+			createReport.mockRejectedValue();
+			return expect(generateReport()).rejects.toMatch('Failed to generate report');
+		});
+
+		it('returns the lighthouse report when successfully building one', async () => {
+
+			createReport.mockResolvedValue('<html></html>');
+
+			const report = await generateReport();
+			expect(createReport).toHaveBeenCalled();
+			expect(report).toEqual('<html></html>');
+
+		});
+
+	});
 });
