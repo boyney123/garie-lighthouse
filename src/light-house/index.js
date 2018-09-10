@@ -45,7 +45,7 @@ const fs = require('fs');
 
 
 module.exports = {
-	getData: async (url) => {
+	getData: async (url, report) => {
 
 		try {
 
@@ -58,13 +58,24 @@ module.exports = {
 
 			logger.info(`Successfully got data for ${url}`)
 
-			return Promise.resolve(filterResults(lighthouse.lhr));
+			return Promise.resolve({
+				raw: lighthouse.lhr,
+				filteredData: filterResults(lighthouse.lhr)
+			});
 
 		} catch (err) {
 			logger.error(`Failed to get data for ${url}`);
 		}
 
-
-
+	},
+	generateReport: async (url, data) => {
+		try {
+			logger.info(`Generating report for ${url}`)
+			const report = await createReport(data);
+			return report;
+		} catch (err) {
+			console.log(err)
+			logger.error(`Failed to generate report`);
+		}
 	}
 }

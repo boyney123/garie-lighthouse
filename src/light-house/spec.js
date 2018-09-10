@@ -37,9 +37,9 @@ describe('reporter', () => {
 
 			launchChromeAndRunLighthouse.mockResolvedValue(mockData);
 
-			const result = await getData(URL);
+			const { filteredData } = await getData(URL);
 
-			expect(result).toEqual({
+			expect(filteredData).toEqual({
 				"performance-score": 100,
 				"pwa-score": 50,
 				"accessibility-score": 88,
@@ -56,6 +56,17 @@ describe('reporter', () => {
 
 		});
 
+		it('returns raw data when successfully getting data from lighthouse', async () => {
+
+			launchChromeAndRunLighthouse.mockResolvedValue(mockData);
+
+			const { raw } = await getData(URL);
+
+			expect(raw).toEqual(mockData.lhr);
+
+
+		});
+
 		it('logs an error when failing to get data from lighthouse', async () => {
 
 			launchChromeAndRunLighthouse.mockRejectedValue();
@@ -63,7 +74,7 @@ describe('reporter', () => {
 			const result = await getData(URL);
 
 			expect(logger.error).toHaveBeenCalledWith('Failed to get data for https://www.test.com');
-			
+
 
 		});
 

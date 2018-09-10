@@ -3,27 +3,30 @@ const express = require('express');
 const router = express.Router();
 const { getData } = require('../../light-house');
 const { saveData } = require('../../influx');
+const saveReport = require('../../utils/save-report');
 
 const { app } = require('../../');
 
 jest.mock('../../light-house', () => {
     return {
-        getData: jest.fn(Promise.resolve()),
-        saveData: jest.fn()
+        getData: jest.fn(() => Promise.resolve())
     }
 });
 
 jest.mock('../../influx', () => {
     return {
-        saveData: jest.fn()
+        saveData: jest.fn(() => Promise.resolve())
     }
 });
+
+jest.mock('../../utils/save-report', () => jest.fn());
 
 describe('webhooks', () => {
 
     beforeEach(() => {
         getData.mockClear();
         saveData.mockClear();
+        saveReport.mockClear();
     })
 
     describe('/collect', () => {
@@ -61,15 +64,41 @@ describe('webhooks', () => {
 
         });
 
-        it('returns 201 with the lighthouse data when successfully getting and saving lighthouse data', async () => {
+        it('returns a 201 with lighthouse data and creates a report if report is set to true and getting and saving lighthouse data is successful', async (done) => {
+
+            saveData.mockResolvedValue();
+            getData.mockResolvedValue();
+
+            request(app)
+                .post('/collect')
+                .send({ url: 'https://www.example.co.uk', report: true })
+                .set('Accept', 'application/json')
+                .expect(201)
+                .end((err) => {
+                    expect(saveReport).toHaveBeenCalled();
+                    done();
+                });
+
+        });
+
+
+        it('returns 201 with the lighthouse data when successfully getting and saving lighthouse data and create no report by default', async (done) => {
+
+            saveData.mockResolvedValue();
+            getData.mockResolvedValue();
 
             request(app)
                 .post('/collect')
                 .send({ url: 'https://www.example.co.uk' })
                 .set('Accept', 'application/json')
-                .expect(201);
+                .expect(201)
+                .end(err => {
+                    expect(saveReport).not.toHaveBeenCalled();
+                    done();
+                })
 
         });
+
 
     });
 

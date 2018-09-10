@@ -3,10 +3,12 @@ const { main } = require('./');
 const influx = require('./influx');
 const config = require('../lighthouse-config');
 const lightHouse = require('./light-house');
+const saveReport = require('./utils/save-report');
 
 jest.mock('./influx', () => {
     return {
-        init: jest.fn()
+        init: jest.fn(),
+        saveData: jest.fn(() => Promise.resolve())
     }
 });
 
@@ -14,14 +16,14 @@ jest.mock('../lighthouse-config', () => {
     return {
         cron: '*/2 * * * *',
         urls: [
-            { url: 'https://www.test.com' }
+            { url: 'https://www.test.com', report: true }
         ]
     }
 });
 
 jest.mock('./light-house', () => {
     return {
-        getData: jest.fn()
+        getData: jest.fn(() => Promise.resolve())
     }
 });
 
@@ -30,6 +32,8 @@ jest.mock('cron', () => {
         CronJob: jest.fn()
     }
 });
+
+jest.mock('./utils/save-report', () => jest.fn());
 
 
 describe('main', () => {
@@ -62,6 +66,25 @@ describe('main', () => {
         expect(cronValue).toEqual('*/2 * * * *');
         expect(timeZone).toEqual('Europe/London');
         expect(startCronOnLoad).toEqual(true);
+
+
+    });
+
+    it.only('create a lighthouse report when report is enabled', async (done) => {
+
+        await main();
+
+        const cronJobArgs = cron.CronJob.mock.calls[0];
+        const callback = cronJobArgs[1];
+
+        // trigger cron
+        callback();
+
+        //Tidy this up?
+        setTimeout(() => {
+            expect(saveReport).toHaveBeenCalled();
+            done();
+        }, 500);
 
 
     });

@@ -2,7 +2,16 @@
 	"cron": "00 00 */6 * * *",
 	"urls": [
 		{
-			"url": "https://www.example.com"
+			"url": "https://www.comparethemarket.com",
+			"report": true
+		},
+		{
+			"url": "https://www.bbc.co.uk",
+			"report": true
+		},
+		{
+			"url": "https://www.cnn.com",
+			"report": true
 		}
 	]
 }
