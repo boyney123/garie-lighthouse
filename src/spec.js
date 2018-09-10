@@ -1,5 +1,5 @@
 const cron = require('cron');
-const main = require('./');
+const { main } = require('./');
 const influx = require('./influx');
 const config = require('../lighthouse-config');
 const lightHouse = require('./light-house');
@@ -12,7 +12,7 @@ jest.mock('./influx', () => {
 
 jest.mock('../lighthouse-config', () => {
     return {
-        cron: true,
+        cron: '*/2 * * * *',
         urls: [
             { url: 'https://www.test.com' }
         ]
@@ -66,12 +66,5 @@ describe('main', () => {
 
     });
 
-    // it.only('should immediately trigger the cron job when called', async (done) => {
-
-    // });
-
-
-
 });
 
-// TODO: Finish the tests here...

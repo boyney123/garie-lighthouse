@@ -40,10 +40,15 @@ const main = async () => {
 
 };
 
-app.listen(3000, async () => {
-	console.log('Application listening on port 3000');
-	await main();
-})
+if (process.env.ENV !== 'test') {
+	app.listen(3000, async () => {
+		console.log('Application listening on port 3000');
+		await main();
+	})
+}
 
-module.exports = main;
+module.exports = {
+	main,
+	app
+}
 
