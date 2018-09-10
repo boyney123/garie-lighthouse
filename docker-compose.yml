@@ -9,6 +9,8 @@ services:
       - INFLUXDB_ADMIN_PASSWORD=admin
   garie-lighthouse:
     image: "garie-lighthouse:latest"
+    volumes:
+      - ./reports:/usr/src/app/reports
     ports:
       - 3000:3000
     environment:
