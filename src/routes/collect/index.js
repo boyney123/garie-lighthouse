@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { getData, saveData } = require('../../light-house');
+const { getData } = require('../../light-house');
+const { saveData } = require('../../influx');
 const logger = require('../../utils/logger');
 
 /* GET home page. */
@@ -17,9 +18,9 @@ router.post('/', async (req, res, next) => {
     try {
         const data = await getData(url);
         await saveData(url, data);
-        res.send(201, data);
+        res.status(201).send(data)
     } catch (err) {
-        logger.error(`Failed to get or save data for ${url}`)
+        logger.error(`Failed to get or save data for ${url}`, err);
         res.sendStatus(500);
     }
 

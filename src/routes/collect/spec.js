@@ -1,13 +1,20 @@
 const request = require('supertest');
 const express = require('express');
 const router = express.Router();
-const { getData, saveData } = require('../../light-house');
+const { getData } = require('../../light-house');
+const { saveData } = require('../../influx');
 
 const { app } = require('../../');
 
 jest.mock('../../light-house', () => {
     return {
         getData: jest.fn(Promise.resolve()),
+        saveData: jest.fn()
+    }
+});
+
+jest.mock('../../influx', () => {
+    return {
         saveData: jest.fn()
     }
 });

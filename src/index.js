@@ -24,7 +24,7 @@ const getDataForAllUrls = async () => {
 		await saveData(item.url, data);
 	}
 
-	logger.info('Finished processed all urls');
+	logger.info('Finished processed all CRON urls');
 
 };
 
