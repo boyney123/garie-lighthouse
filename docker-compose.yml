@@ -11,3 +11,5 @@ services:
     image: "garie-lighthouse:latest"
     ports:
       - 3000:3000
+    environment:
+      - HOST=influxdb  
