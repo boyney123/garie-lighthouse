@@ -1,7 +1,7 @@
 FROM node:8.10.0
 
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+RUN mkdir -p /usr/src/garie-lighthouse
+WORKDIR /usr/src/garie-lighthouse
 
 COPY package.json .
 
