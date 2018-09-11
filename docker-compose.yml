@@ -10,7 +10,7 @@ services:
   garie-lighthouse:
     image: "garie-lighthouse:latest"
     volumes:
-      - ./reports:/usr/src/app/reports
+      - ./reports:/usr/src/garie-lighthouse/reports
     ports:
       - 3000:3000
     environment:
