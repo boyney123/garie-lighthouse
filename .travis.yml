@@ -2,5 +2,9 @@ language: node_js
 node_js:
   - '10'
   - '8'
-after_script:
-  - './node_modules/.bin/nyc report --reporter=text-lcov > coverage.lcov && ./node_modules/.bin/codecov'
+install:
+  - npm install -g codecov
+  - npm install
+script:
+  - npm test
+  - codecov       
