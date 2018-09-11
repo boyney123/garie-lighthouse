@@ -52,7 +52,11 @@ describe('reporter', () => {
 				"firstCPUIdle": 866,
 				"interactive": 866,
 				"speedIndex": 903,
-				"estimatedInputLatency": 13
+				"estimatedInputLatency": 13,
+				"errors-in-console": 0,
+				"time-to-first-byte": 104.07399999999998,
+				"interactive": 866,
+				"redirects": 0
 			});
 
 

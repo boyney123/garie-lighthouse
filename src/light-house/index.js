@@ -1,11 +1,11 @@
 const { launchChromeAndRunLighthouse, createReport } = require('./utils');
 const logger = require('../utils/logger');
 
-const filterResults = (data) => {
+const filterResults = (data = {}) => {
 
 	const { categories = {}, audits = {} } = data;
 
-	const { metrics } = audits;
+	const { metrics = {} } = audits;
 	const { details = {} } = metrics;
 	const { items = [] } = details;
 	const metricItems = items[0] || {};
@@ -36,8 +36,17 @@ const filterResults = (data) => {
 		}
 	}
 
-	return report;
+	const auditData = ['errors-in-console', 'time-to-first-byte', 'interactive', 'redirects'];
 
+	auditData.forEach(key => {
+		const { rawValue } = audits[key] || {};
+		if (rawValue !== undefined) {
+			report[key] = rawValue;
+		}
+	})
+
+
+	return report;
 
 };
 
@@ -45,7 +54,7 @@ const fs = require('fs');
 
 
 module.exports = {
-	getData: async (url, report) => {
+	getData: async (url, report = {}) => {
 
 		try {
 
