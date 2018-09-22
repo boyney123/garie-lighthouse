@@ -1,0 +1,6 @@
+{
+    "bail": true,
+    "verbose": true,
+    "watchPathIgnorePatterns": ["<rootDir>/reports/"],
+    "coveragePathIgnorePatterns": ["/node_modules/", "/src/utils/logger.js"]
+}
