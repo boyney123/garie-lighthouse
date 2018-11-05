@@ -7,7 +7,6 @@ const chromeFlags = [
 	'--headless',
 	'--no-zygote',
 	'--no-sandbox',
-	'--headless',
 ];
 
 const launchChromeAndRunLighthouse = async (url, config) => {

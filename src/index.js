@@ -19,34 +19,30 @@ const { urls, cron } = config;
 app.use('/collect', collect);
 app.use('/reports', express.static('reports'), serveIndex('reports', { icons: true }));
 
-const getDataForAllUrls = async () => {
+async function getDataForAllUrls() {
     // Run lighthouse tests 1 after another.... maybe parallel one day?
     for (const item of urls) {
         try {
-            const { url, plugins = [] } = item;
+            const { url, plugins = [] } = item
 
-            const pluginConfig = plugins.find(({ name }) => {
-                return name === 'lighthouse';
-            });
+            const { report, config }  = plugins.find(({ name }) => name === 'lighthouse') || {}
 
-            const { report } = pluginConfig || {};
+            const { raw, filteredData } = (await getData(url, config)) || {};
 
-            const { raw, filteredData } = (await getData(item.url)) || {};
-
-            await saveData(item.url, filteredData);
+            await saveData(url, filteredData);
 
             if (report) {
                 await saveReport(url, raw);
             }
         } catch (err) {
-            console.log(err);
+            console.error(err);
         }
     }
 
     logger.info('Finished processed all CRON urls');
 };
 
-const main = async () => {
+async function main () {
     await init();
 
     try {
@@ -64,13 +60,13 @@ const main = async () => {
             );
         }
     } catch (err) {
-        console.log(err);
+        console.error(err);
     }
 };
 
 if (process.env.ENV !== 'test') {
     app.listen(3000, async () => {
-        console.log('Application listening on port 3000');
+        console.info('Application listening on port 3000');
         await main();
     });
 }

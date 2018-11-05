@@ -8,10 +8,12 @@ services:
       - INFLUXDB_ADMIN_USER=admin
       - INFLUXDB_ADMIN_PASSWORD=admin
   garie-lighthouse:
-    image: "garie-lighthouse:latest"
+    build: "."
     volumes:
       - ./reports:/usr/src/garie-lighthouse/reports
     ports:
       - 3000:3000
     environment:
       - HOST=influxdb  
+    depends_on:
+      - influxdb

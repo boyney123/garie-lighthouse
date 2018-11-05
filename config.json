@@ -9,6 +9,20 @@
                     "report": true
                 }
             ]
+        },
+        {
+            "url": "https://www.example.com",
+            "plugins": [
+                {
+                    "name": "lighthouse",
+                    "report": true,
+                    "config": {
+                        "settings": {
+                            "emulatedFormFactor": "desktop"
+                        }
+                    }
+                }
+            ]
         }
     ]
 }

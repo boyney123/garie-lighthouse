@@ -1,7 +1,11 @@
 const { launchChromeAndRunLighthouse, createReport } = require('./utils');
 const logger = require('../utils/logger');
 
-const filterResults = (data = {}) => {
+const defaultLighthouseConfig = {
+    extends: 'lighthouse:default'
+}
+
+function filterResults (data = {}) {
     const { categories = {}, audits = {} } = data;
 
     const { metrics = {} } = audits;
@@ -27,7 +31,7 @@ const filterResults = (data = {}) => {
 
         // For now don't report on any observered metrics
         if (metricItem.indexOf('observed') === -1) {
-            const metric = metricItems[metricItem];
+            // const metric = metricItems[metricItem];
             report[metricItem] = metricItems[metricItem];
         }
     }
@@ -44,36 +48,32 @@ const filterResults = (data = {}) => {
     return report;
 };
 
-const fs = require('fs');
-
 module.exports = {
-    getData: async (url, report = {}) => {
+    async getData (url, userConfig) {
         try {
             logger.info(`Getting data for ${url}`);
+            const config = Object.assign({}, defaultLighthouseConfig, userConfig)
+            const lighthouse = (await launchChromeAndRunLighthouse(url, config)) || {};
 
-            const lighthouse =
-                (await launchChromeAndRunLighthouse(url, {
-                    extends: 'lighthouse:default'
-                    // Can add other things here, to throttle connections (Maybe maybe differnt connect types and report on them in the long run)
-                })) || {};
-
-            logger.info(`Successfully got data for ${url}`);
+            logger.info(`Successfully got data for ${url}`)
 
             return Promise.resolve({
                 raw: lighthouse.lhr,
                 filteredData: filterResults(lighthouse.lhr)
             });
         } catch (err) {
-            logger.error(`Failed to get data for ${url}`, err);
+            logger.error(`Failed to get data for ${url}`)
+            logger.error(err)
         }
     },
-    generateReport: async (url, data) => {
+    async generateReport (url, data) {
         try {
             logger.info(`Generating report for ${url}`);
             const report = await createReport(data);
             return report;
         } catch (err) {
-            logger.error(`Failed to generate report`, err);
+            logger.error(`Failed to generate report`);
+            logger.error(err)
             return Promise.reject('Failed to generate report');
         }
     }
