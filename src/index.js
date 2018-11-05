@@ -35,7 +35,7 @@ async function getDataForAllUrls() {
                 await saveReport(url, raw);
             }
         } catch (err) {
-            console.error(err);
+            console.log(err);
         }
     }
 
@@ -60,13 +60,13 @@ async function main () {
             );
         }
     } catch (err) {
-        console.error(err);
+        console.log(err);
     }
 };
 
 if (process.env.ENV !== 'test') {
     app.listen(3000, async () => {
-        console.info('Application listening on port 3000');
+        console.log('Application listening on port 3000');
         await main();
     });
 }
