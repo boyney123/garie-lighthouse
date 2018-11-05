@@ -1,6 +1,6 @@
 {
     "name": "garie-lighthouse",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "description": "Lighthouse image for performance metrics",
     "license": "MIT",
     "repository": "boyney123/garie-lighthouse",
