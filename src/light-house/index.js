@@ -47,15 +47,12 @@ const filterResults = (data = {}) => {
 const fs = require('fs');
 
 module.exports = {
-    getData: async (url, report = {}) => {
+    getData: async (url, config = {}) => {
         try {
             logger.info(`Getting data for ${url}`);
 
             const lighthouse =
-                (await launchChromeAndRunLighthouse(url, {
-                    extends: 'lighthouse:default'
-                    // Can add other things here, to throttle connections (Maybe maybe differnt connect types and report on them in the long run)
-                })) || {};
+                (await launchChromeAndRunLighthouse(url, { extends: 'lighthouse:default', ...config })) || {};
 
             logger.info(`Successfully got data for ${url}`);
 
