@@ -17,6 +17,11 @@ RUN \
     apt-get install -y --no-install-recommends google-chrome-stable && \
     rm -rf /var/lib/apt/lists/*
 
+RUN wget https://github.com/Yelp/dumb-init/releases/download/v1.2.2/dumb-init_1.2.2_amd64.deb
+RUN dpkg -i dumb-init_*.deb
+
+ENTRYPOINT ["/usr/bin/dumb-init", "--"]    
+
 EXPOSE 3000
 
 CMD ["npm", "start"]
