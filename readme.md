@@ -148,17 +148,37 @@ _By default, reports on webhook's are not generated unless you set `report` to t
 | `plugins`        | `object` (optional)  | To setup custom lighthouse config.                        |
 | `plugins.name`   | `string` (required)  | Needs to be set to `lighthouse`                           |
 | `plugins.report` | `boolean` (optional) | If set to true, lighthouse report will also be generated. |
+| `plugins.config` | `object` (optional)  | To configure lighthouse, such as device type and throttling. See [Configuration](https://github.com/GoogleChrome/lighthouse/blob/master/docs/configuration.md) for details. |
 
-## Example
+## Example (Basic Config)
 
 ```javascript
 {
-  "url": "https://www.bbc.co.uk",
-  "plugins": [
-	  {
-		  "name": "lighthouse",
-		  "report": true
-	  }
-  ]
+	"url": "https://www.bbc.co.uk",
+	"plugins": [
+		{
+			"name": "lighthouse",
+			"report": true
+		}
+	]
+}
+```
+
+## Example (Custom Config)
+```javascript
+{
+	"url": "https://www.bbc.co.uk",
+	"plugins": [
+		{
+			"name": "lighthouse",
+			"report": true,
+			"config": {
+				"extends": "lighthouse:default",
+				"settings": {
+					"emulatedFormFactor": "desktop"
+				}
+			}
+		}
+	]
 }
 ```
