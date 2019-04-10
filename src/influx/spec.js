@@ -82,6 +82,36 @@ describe('influxdb', () => {
 
         });
 
+        it('writes influxdb points into the database for each property on a given object if it has values using the label when provided', async () => {
+
+            const label = 'desktop';
+            const url = 'https://www.test.com';
+            const result = await saveData(url, { firstname: 'bob', lastname: 'bob' }, label);
+
+            expect(influx.writePoints).toHaveBeenCalledWith([
+                {
+                    "measurement": "firstname",
+                    "tags": {
+                        "url": `${url}~${label}`
+                    },
+                    "fields": {
+                        "value": "bob"
+                    }
+                },
+                {
+                    "measurement": "lastname",
+                    "tags": {
+                        "url": `${url}~${label}`
+                    },
+                    "fields": {
+                        "value": "bob"
+                    }
+                }
+            ]);
+
+
+        });
+
         it('does not write influxdb points into the database for any property that does not have a value', async () => {
 
             await saveData('https://www.test.com', { firstname: 'bob', lastname: undefined });
