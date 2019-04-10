@@ -3,7 +3,7 @@ const path = require('path');
 const logger = require('../../utils/logger');
 const { generateReport } = require('../../light-house');
 
-module.exports = async (url, label, data) => {
+module.exports = async (url, data, label) => {
     try {
         const report = await generateReport(url, data);
         const date = new Date();

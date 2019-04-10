@@ -33,10 +33,10 @@ const getDataForAllUrls = async () => {
 
             const { raw, filteredData } = (await getData(item.url, config)) || {};
 
-            await saveData(item.url, label, filteredData);
+            await saveData(item.url, filteredData, label);
 
             if (report) {
-                await saveReport(url, label, raw);
+                await saveReport(url, raw, label);
             }
         } catch (err) {
             console.log(err);

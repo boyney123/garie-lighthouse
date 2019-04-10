@@ -25,7 +25,7 @@ const init = async () => {
  * @param {String} url - Url from the peroformance data to save
  * @param {*} data - Data to save
  */
-const saveData = async (url, label, data) => {
+const saveData = async (url, data, label) => {
 
 	try {
 		const tag = label ? `${url}~${label}` : url;
