@@ -12,11 +12,11 @@
 
 **Highlights**
 
--   Poll for lighthouse performance metrics on any website and stores the data into InfluxDB
--   Webhook support
--   Understand your performance metrics with recommend improvements thanks to lighthouse reports
--   View all historic lighthouse reports.
--   Setup within minutes
+- Poll for lighthouse performance metrics on any website and stores the data into InfluxDB
+- Webhook support
+- Understand your performance metrics with recommend improvements thanks to lighthouse reports
+- View all historic lighthouse reports.
+- Setup within minutes
 
 ## Overview of garie-lighthouse
 
@@ -34,7 +34,7 @@ If you want to run `garie-lighthouse` standalone you can find out how below.
 
 ### Prerequisites
 
--   Docker installed
+- Docker installed
 
 ### Running garie-lighthouse
 
@@ -142,43 +142,69 @@ _By default, reports on webhook's are not generated unless you set `report` to t
 
 **urls object**
 
-| Property         | Type                 | Description                                               |
-| ---------------- | -------------------- | --------------------------------------------------------- |
-| `url`            | `string` (required)  | Url to get lighthouse metrics for.                        |
-| `plugins`        | `object` (optional)  | To setup custom lighthouse config.                        |
-| `plugins.name`   | `string` (required)  | Needs to be set to `lighthouse`                           |
-| `plugins.report` | `boolean` (optional) | If set to true, lighthouse report will also be generated. |
-| `plugins.config` | `object` (optional)  | To configure lighthouse, such as device type and throttling. See [Configuration](https://github.com/GoogleChrome/lighthouse/blob/master/docs/configuration.md) for details. |
+| Property         | Type                                   | Description                                                                                                                                                                 |
+| ---------------- | -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `url`            | `string` (required)                    | Url to get lighthouse metrics for.                                                                                                                                          |
+| `plugins`        | `object` (optional)                    | To setup custom lighthouse config.                                                                                                                                          |
+| `plugins.name`   | `string` (required)                    | Needs to be set to `lighthouse`                                                                                                                                             |
+| `plugins.report` | `boolean` (optional)                   | If set to true, lighthouse report will also be generated.                                                                                                                   |
+| `plugins.config` | `object` (optional)                    | To configure lighthouse, such as device type and throttling. See [Configuration](https://github.com/GoogleChrome/lighthouse/blob/master/docs/configuration.md) for details. |
+| `plugins.init`   | `async function(url, page)` (optional) | When set the function will be executed before lighthouse. The page object exposes the [puppetere api](https://pptr.dev/), and can be used to init your app (e. g. login).   |
 
 ## Example (Basic Config)
 
 ```javascript
-{
-	"url": "https://www.bbc.co.uk",
-	"plugins": [
-		{
-			"name": "lighthouse",
-			"report": true
-		}
-	]
-}
+module.exports = {
+  url: 'https://www.bbc.co.uk',
+  plugins: [
+    {
+      name: 'lighthouse',
+      report: true
+    }
+  ]
+};
 ```
 
 ## Example (Custom Config)
+
 ```javascript
-{
-	"url": "https://www.bbc.co.uk",
-	"plugins": [
-		{
-			"name": "lighthouse",
-			"report": true,
-			"config": {
-				"extends": "lighthouse:default",
-				"settings": {
-					"emulatedFormFactor": "desktop"
-				}
-			}
-		}
-	]
-}
+module.exports = {
+  url: 'https://www.bbc.co.uk',
+  plugins: [
+    {
+      name: 'lighthouse',
+      report: true,
+      config: {
+        extends: 'lighthouse:default',
+        settings: {
+          emulatedFormFactor: 'desktop'
+        }
+      }
+    }
+  ]
+};
+```
+
+## Example (init functuin)
+
+```javascript
+module.exports = {
+  url: 'https://www.bbc.co.uk',
+  plugins: [
+    {
+      name: 'lighthouse',
+      report: true,
+      init: async (url, page) => {
+        await page.goto(url);
+        await page.waitForSelector('[name=username]');
+        await page.focus('[name=username]');
+        await page.keyboard.type('testuser');
+        await page.waitForSelector('[name=password]');
+        await page.focus('[name=password]');
+        await page.keyboard.type('password');
+        await page.click('[type=submit]');
+      }
+    }
+  ]
+};
 ```

@@ -47,12 +47,12 @@ const filterResults = (data = {}) => {
 const fs = require('fs');
 
 module.exports = {
-    getData: async (url, config = {}) => {
+    getData: async (url, config = {}, init = undefined) => {
         try {
             logger.info(`Getting data for ${url}`);
 
             const lighthouse =
-                (await launchChromeAndRunLighthouse(url, { extends: 'lighthouse:default', ...config })) || {};
+                (await launchChromeAndRunLighthouse(url, { extends: 'lighthouse:default', ...config }, init)) || {};
 
             logger.info(`Successfully got data for ${url}`);
 
