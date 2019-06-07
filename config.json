@@ -8,7 +8,11 @@
                     "name": "lighthouse",
                     "report": true
                 }
-            ]
+            ],
+            "tags": {
+                "technology": "vue",
+                "page": "home-page"
+            }
         }
     ]
 }
