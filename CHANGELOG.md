@@ -1,3 +1,7 @@
+## 2.1 (June 7th, 2019)
+
+-   [new] allow username and password support on influxDB [20](https://github.com/boyney123/garie-lighthouse/pull/20) thanks to [darashenka](https://github.com/darashenka)
+
 ## 2.0 (Feb 4th, 2019)
 
 -   [new] Use dumb-init as entrypoint to avoid zombie processes issue [6](https://github.com/boyney123/garie-lighthouse/pull/6) thanks to [ciarancourtney](https://github.com/ciarancourtney)
