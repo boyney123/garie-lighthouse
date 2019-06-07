@@ -1,6 +1,7 @@
 ## 2.1 (June 7th, 2019)
 
 -   [new] allow username and password support on influxDB [20](https://github.com/boyney123/garie-lighthouse/pull/20) thanks to [darashenka](https://github.com/darashenka)
+-   [fix] Chrome install within Docker [20](https://github.com/boyney123/garie-lighthouse/pull/21) thanks to [boyney123](https://github.com/boyney123)
 
 ## 2.0 (Feb 4th, 2019)
 
