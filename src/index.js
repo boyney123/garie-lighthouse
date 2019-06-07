@@ -23,7 +23,7 @@ const getDataForAllUrls = async () => {
     // Run lighthouse tests 1 after another.... maybe parallel one day?
     for (const item of urls) {
         try {
-            const { url, plugins = [] } = item;
+            const { url, plugins = [], tags } = item;
 
             const pluginConfig = plugins.find(({ name }) => {
                 return name === 'lighthouse';
@@ -33,10 +33,10 @@ const getDataForAllUrls = async () => {
 
             const { raw, filteredData } = (await getData(item.url, config)) || {};
 
-            await saveData(item.url, filteredData);
+            await saveData(item.url, filteredData, tags);
 
             if (report) {
-                await saveReport(url, raw);
+                await saveReport(url, raw, tags);
             }
         } catch (err) {
             console.log(err);

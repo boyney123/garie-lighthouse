@@ -24,8 +24,9 @@ const init = async () => {
  * Insert all key value pairs into the DB
  * @param {String} url - Url from the peroformance data to save
  * @param {*} data - Data to save
+ * @param {Object} tags
  */
-const saveData = async (url, data) => {
+const saveData = async (url, data, tags) => {
 
 	try {
 
@@ -33,7 +34,7 @@ const saveData = async (url, data) => {
 			if (data[key]) {
 				points.push({
 					measurement: key,
-					tags: { url },
+					tags: { url, ...tags },
 					fields: { value: data[key] }
 				})
 			}
