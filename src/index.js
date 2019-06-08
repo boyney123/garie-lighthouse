@@ -29,9 +29,9 @@ const getDataForAllUrls = async () => {
                 return name === 'lighthouse';
             });
 
-            const { report, config } = pluginConfig || {};
+            const { report, config, init } = pluginConfig || {};
 
-            const { raw, filteredData } = (await getData(item.url, config)) || {};
+            const { raw, filteredData } = (await getData(item.url, config, init)) || {};
 
             await saveData(item.url, filteredData);
 

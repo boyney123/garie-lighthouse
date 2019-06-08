@@ -30,6 +30,8 @@
         "fs-extra": "^7.0.0",
         "influx": "^5.0.7",
         "lighthouse": "^4.0.0",
+        "puppeteer": "^1.15.0",
+        "request-promise": "^4.2.4",
         "serve-index": "^1.9.1",
         "winston": "^3.0.0"
     },

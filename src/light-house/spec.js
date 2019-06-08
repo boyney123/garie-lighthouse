@@ -26,12 +26,14 @@ describe('reporter', () => {
     describe('getData', () => {
         it('opens chrome and runs lighthouse with the given url and default lighthouse configuration', () => {
             getData(URL);
-            expect(launchChromeAndRunLighthouse).toBeCalledWith(URL, { extends: 'lighthouse:default' });
+            expect(launchChromeAndRunLighthouse).toBeCalledWith(URL, { extends: 'lighthouse:default' }, undefined);
         });
 
         it('opens chrome and runs lighthouse with the given url and custom lighthouse configuration', () => {
-            getData(URL, { settings: { emulatedFormFactor: 'desktop '}});
-            expect(launchChromeAndRunLighthouse).toBeCalledWith(URL, { extends: 'lighthouse:default', settings: { emulatedFormFactor: 'desktop '}});
+            const init = async (url, page) => {
+            };
+            getData(URL, { settings: { emulatedFormFactor: 'desktop ' } }, init);
+            expect(launchChromeAndRunLighthouse).toBeCalledWith(URL, { extends: 'lighthouse:default', settings: { emulatedFormFactor: 'desktop ' } }, init);
         });
 
         it('returns filtered data when successfully getting data from lighthouse', async () => {
