@@ -1,9 +1,11 @@
 const cron = require('cron');
+const numCPUs = require('os').cpus().length;
 const { main } = require('./');
 const influx = require('./influx');
 const config = require('../config');
 const lightHouse = require('./light-house');
 const saveReport = require('./utils/save-report');
+const mapAsync = require('./utils/map-async');
 
 jest.mock('./influx', () => {
     return {
@@ -43,11 +45,15 @@ jest.mock('cron', () => {
 
 jest.mock('./utils/save-report', () => jest.fn());
 
+jest.mock('./utils/map-async', () =>
+    jest.fn((items, mapper, options) => items.map(it => mapper(it))));
+
 describe('main', () => {
     beforeEach(() => {
         influx.init.mockClear();
         cron.CronJob.mockClear();
         lightHouse.getData.mockClear();
+        mapAsync.mockClear();
     });
 
     it('calls to bootstrap the influx setup', async () => {
@@ -69,7 +75,7 @@ describe('main', () => {
         expect(startCronOnLoad).toEqual(true);
     });
 
-    it.only('create a lighthouse report when report is enabled', async done => {
+    it('create a lighthouse report when report is enabled', async done => {
         await main();
 
         const cronJobArgs = cron.CronJob.mock.calls[0];
@@ -83,5 +89,18 @@ describe('main', () => {
             expect(saveReport).toHaveBeenCalled();
             done();
         }, 500);
+    });
+
+    it('runs lighthouse concurrently with number of CPUs', async () => {
+        await main();
+
+        const cronJobArgs = cron.CronJob.mock.calls[0];
+        const callback = cronJobArgs[1];
+
+        // trigger cron
+        callback();
+
+        const expectedOptions = { concurrency: numCPUs };
+        expect(mapAsync).toHaveBeenCalledWith(expect.anything(), expect.any(Function), expectedOptions);
     });
 });
