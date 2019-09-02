@@ -37,6 +37,25 @@ describe('save-report', () => {
 
     });
 
+    it('generates a light house report and save it to disk when generateReport is successful with correct label when provided', async () => {
+
+        const today = new Date();
+        const label = 'desktop';
+
+        generateReport.mockResolvedValue(`<html></html>`);
+
+        await saveReport('https://www.save-report-test.co.uk', mockData.lhr, label);
+
+        const filesInFolder = fs.readdirSync(path.join(__dirname, '../../../reports/www.save-report-test.co.uk'));
+
+        const fileMatch = new Date().toISOString().match(/[^T]*/);
+
+        expect(filesInFolder).toHaveLength(1);
+        expect(filesInFolder[0].indexOf(fileMatch[0]) > -1).toEqual(true);
+        expect(filesInFolder[0].indexOf(label) > -1).toEqual(true);
+
+    });
+
     it('throws an error if generating the lighthouse report fails', async () => {
 
         const today = new Date();
