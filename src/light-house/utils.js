@@ -8,6 +8,11 @@ const chromeFlags = [
 	'--no-zygote',
 	'--no-sandbox',
 	'--headless',
+	'--disable-network-throttling',
+	'--disable-cpu-throttling',
+	'--throttling-method provided',
+	'--enable-error-reporting',
+	'--max-wait-for-load 80000', 
 ];
 
 const launchChromeAndRunLighthouse = async (url, config) => {
