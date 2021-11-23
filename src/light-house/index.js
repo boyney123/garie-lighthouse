@@ -47,6 +47,31 @@ const filterResults = (data = {}) => {
 const fs = require('fs');
 
 module.exports = {
+    getDatanew: async (url, config, device, netmode = {}, port) => {
+        try {
+            logger.info(`Getting data for ${url}`);
+
+            const lighthouse =
+                (await launchChromeAndRunLighthouse(url, {extends: 'lighthouse:default', ...config}, device, netmode, port)) || {};
+
+            if (lighthouse != null) {
+
+
+                logger.info(`Lighthouse run completed for ${url}`);
+
+                return Promise.resolve({
+                    raw: lighthouse.lhr,
+                    filteredData: filterResults(lighthouse.lhr)
+                });
+            } else
+                return Promise.reject(
+                    new Error("Whoops!")
+                );
+        }
+        catch (err) {
+            logger.error(`Failed to get data for ${url}`, err);
+        }
+    },
     getData: async (url, config = {}) => {
         try {
             logger.info(`Getting data for ${url}`);

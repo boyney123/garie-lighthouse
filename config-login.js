@@ -1,16 +1,14 @@
 {
     "cron": "0/2 *  * * *",
     "devices" : [
-        "OnePlus 7",
         "IphoneX"
     ],
     "networks" : [
-       "2G"
-     , "3G"
+        "WIFI"
     ],
     "urls": [
         {
-            "url": "https://www.google.com",
+            "url": "https://www.yahoo.com",
             "plugins": [
                 {
                     "name": "lighthouse",

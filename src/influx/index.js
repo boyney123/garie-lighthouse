@@ -25,7 +25,7 @@ const init = async () => {
  * @param {String} url - Url from the peroformance data to save
  * @param {*} data - Data to save
  */
-const saveData = async (url, data) => {
+const saveData = async (url, data, device,netmode)  => {
 
 	try {
 
@@ -33,7 +33,7 @@ const saveData = async (url, data) => {
 			if (data[key]) {
 				points.push({
 					measurement: key,
-					tags: { url },
+					tags: { url, device, netmode },
 					fields: { value: data[key] }
 				})
 			}
